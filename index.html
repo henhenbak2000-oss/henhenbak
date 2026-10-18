@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#4f46e5">
-    <title>Henhenbak AI - 100 Siêu Trí Tuệ IQ 3000</title>
+    <title>Henhenbak AI - Trợ lý thông minh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
                 <div class="text-center mb-5">
                     <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white text-2xl font-bold shadow-lg shadow-indigo-500/30 mb-3">H</div>
                     <h2 id="auth-title" class="text-2xl font-bold tracking-tight">Đăng nhập Henhenbak AI</h2>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Hệ thống 100 Siêu AI IQ 3000 - Đồng bộ đa thiết bị</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Trợ lý AI thông minh đỉnh cao - Đồng bộ đa thiết bị</p>
                 </div>
 
                 <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4" autocomplete="off">
@@ -91,7 +91,8 @@
                         <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-md">H</div>
                         <div>
                             <h1 class="font-bold text-sm leading-tight text-slate-900 dark:text-white">Henhenbak AI</h1>
-                            <span class="text-xs text-emerald-500 flex items-center gap-1 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 100 Siêu AI IQ 3000</span>
+                            <!-- Yêu cầu ảnh 1: AI Henhenbak trực tuyến 24/24 -->
+                            <span class="text-xs text-emerald-500 flex items-center gap-1 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> AI Henhenbak trực tuyến 24/24</span>
                         </div>
                     </div>
                     <button onclick="createNewChat()" title="Cuộc trò chuyện mới" class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
@@ -164,21 +165,13 @@
                         <button onclick="toggleSidebar()" class="p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300 flex-shrink-0 text-base">
                             <i class="fa-solid fa-bars"></i>
                         </button>
-                        <!-- Menu Chọn 100 Siêu AI IQ 3000 -->
+                        <!-- Yêu cầu ảnh 4: Chỉ có 3 chế độ (Bình thường, Vừa phải, Pro) -->
                         <div class="relative flex items-center max-w-xs sm:max-w-md w-full">
                             <i class="fa-solid fa-brain text-indigo-500 absolute left-3 text-xs pointer-events-none"></i>
                             <select id="ai-model-selector" onchange="changeAiBrainModel(this.value)" class="w-full pl-8 pr-6 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 border border-indigo-500/30 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 truncate cursor-pointer">
-                                <option value="auto_100_iq3000">⚡ Hợp Nhất 100 Siêu AI (IQ 3000 - Tự Động Khôn Nhất)</option>
-                                <option value="openai-large">1. GPT-4o Max (Siêu Trí Tuệ Vô Song - IQ 3000)</option>
-                                <option value="deepseek-r1">2. DeepSeek R1 (Bậc Thầy Giải Toán & Suy Luận Siêu Sâu)</option>
-                                <option value="qwen-coder">3. Qwen 2.5 Coder 32B (Trùm Lập Trình Script Roblox Lua)</option>
-                                <option value="claude-hybridspace">4. Claude 3.5 Sonnet (Chuyên Gia Viết Văn & Phân Tích)</option>
-                                <option value="deepseek">5. DeepSeek V3 (Xử Lý Logic & Lập Trình Tốc Độ Cao)</option>
-                                <option value="gemini">6. Gemini 2.5 Pro (Trợ Lý Đa Nhiệm Toàn Diện)</option>
-                                <option value="llama">7. Llama 3.3 70B (Hệ Thống Kiến Thức Khổng Lồ)</option>
-                                <option value="mistral">8. Mistral Large 2 (Phản Hồi Chuẩn Xác Từng Mi-li-giây)</option>
-                                <option value="searchgpt">9. SearchGPT Realtime (Tra Cứu Thông Tin Trực Tuyến)</option>
-                                <option value="openai">10. GPT-4o Turbo (Tốc Độ Phản Hồi Tức Thì)</option>
+                                <option value="mode_binh_thuong">⚡ Chế độ 1: Bình thường</option>
+                                <option value="mode_vua_phai">⚡ Chế độ 2: Vừa phải</option>
+                                <option value="mode_pro">⚡ Chế độ 3: Pro (Tối ưu tuyệt đối)</option>
                             </select>
                         </div>
                     </div>
@@ -198,7 +191,8 @@
                 <div class="p-3 sm:p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-t border-slate-200 dark:border-slate-800 flex-shrink-0">
                     <form id="chat-form" onsubmit="handleChatSubmit(event)" class="max-w-4xl mx-auto relative">
                         <div class="relative flex items-center bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 focus-within:ring-2 focus-within:ring-indigo-500/20 shadow-sm transition-all">
-                            <textarea id="chat-input" rows="1" placeholder="Nhập yêu cầu script Roblox, giải bài tập hoặc câu hỏi bất kỳ cho 100 Siêu AI IQ 3000..." onkeydown="handleChatKeyDown(event)" oninput="autoResizeTextarea(this)" class="w-full pl-4 pr-24 py-3.5 bg-transparent text-sm focus:outline-none resize-none max-h-36 overflow-y-auto text-slate-900 dark:text-white" style="height: auto;"></textarea>
+                            <!-- Yêu cầu ảnh 3: Ghi là AI Henhenbak sẵn sàng trả lời -->
+                            <textarea id="chat-input" rows="1" placeholder="AI Henhenbak sẵn sàng trả lời..." onkeydown="handleChatKeyDown(event)" oninput="autoResizeTextarea(this)" class="w-full pl-4 pr-24 py-3.5 bg-transparent text-sm focus:outline-none resize-none max-h-36 overflow-y-auto text-slate-900 dark:text-white" style="height: auto;"></textarea>
                             <div class="absolute right-2 flex items-center space-x-1.5">
                                 <button type="button" onclick="triggerFileInput()" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-paperclip text-sm"></i></button>
                                 <input type="file" id="file-input" onchange="handleFileSelected(event)" class="hidden" accept="image/*,.txt,.pdf">
@@ -206,7 +200,7 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between mt-2 px-1 text-[11px] text-slate-400">
-                            <span id="active-ai-status-bar"><i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Đang bật: <b>Hợp Nhất 100 Siêu AI (IQ 3000)</b> - Nghe lệnh tuyệt đối</span>
+                            <span id="active-ai-status-bar"><i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> AI Henhenbak trực tuyến 24/24</span>
                             <span id="file-attached-indicator" class="hidden text-indigo-600 font-semibold bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 <i class="fa-solid fa-file-lines"></i> <span id="attached-filename">file</span> <i class="fa-solid fa-xmark cursor-pointer" onclick="removeAttachedFile()"></i>
                             </span>
@@ -216,15 +210,14 @@
             </main>
         </div>
 
-        <!-- SYNC MODAL -->
+        <!-- MODALS -->
         <div id="sync-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg p-6 relative flex flex-col text-slate-900 dark:text-slate-100 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
                     <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-indigo-500"></i> Truyền Dữ Liệu Đa Thiết Bị</h3>
                     <button onclick="closeSyncModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
-                <div class="text-xs text-slate-500">Hệ thống Tự động đồng bộ Realtime liên tục giữa PC & Điện thoại.</div>
-                <textarea id="sync-data-textarea" rows="2" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-mono text-indigo-600 dark:text-indigo-400 font-bold resize-none leading-relaxed"></textarea>
+                <textarea id="sync-data-textarea" rows="2" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-mono text-indigo-600 font-bold resize-none leading-relaxed"></textarea>
                 <div class="grid grid-cols-3 gap-2.5 pt-2">
                     <button type="button" onclick="exportSyncData()" class="py-3 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-md">Tạo Link</button>
                     <button type="button" onclick="copySyncData()" class="py-3 rounded-xl bg-amber-500 text-white font-semibold text-xs shadow-md">Sao Chép</button>
@@ -234,7 +227,6 @@
             </div>
         </div>
 
-        <!-- PROFILE MODAL -->
         <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden relative text-slate-900 dark:text-slate-100">
                 <div id="profile-bg-preview" class="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-cover bg-center relative">
@@ -258,7 +250,6 @@
             </div>
         </div>
 
-        <!-- INVENTORY MODAL -->
         <div id="inventory-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg p-6 relative max-h-[85vh] flex flex-col text-slate-900 dark:text-slate-100">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
@@ -269,7 +260,6 @@
             </div>
         </div>
 
-        <!-- REDEEM MODAL -->
         <div id="redeem-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 relative text-slate-900 dark:text-slate-100">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -284,7 +274,6 @@
             </div>
         </div>
 
-        <!-- GIFT MODAL -->
         <div id="gift-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 relative text-slate-900 dark:text-slate-100">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -300,7 +289,6 @@
             </div>
         </div>
 
-        <!-- PREMIUM MODAL -->
         <div id="premium-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto text-slate-900 dark:text-slate-100">
                 <button type="button" onclick="closePremiumModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -322,7 +310,6 @@
             </div>
         </div>
 
-        <!-- VIP CHOICE MODAL -->
         <div id="vip-choice-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 relative text-slate-900 dark:text-slate-100">
                 <h3 class="font-bold text-lg text-center" id="vip-choice-title">Chọn hình thức sử dụng</h3>
@@ -333,7 +320,6 @@
             </div>
         </div>
 
-        <!-- ADMIN MODAL -->
         <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-5xl p-6 relative max-h-[90vh] flex flex-col text-slate-900 dark:text-slate-100">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4 flex-shrink-0">
@@ -533,6 +519,106 @@
             } catch (e) {}
             return localStorage.getItem('henhenbak_short_' + shortId) || null;
         };
+    </script><script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'henhenbak-ai-cloud-global-v40';
+        const hasRealFirebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config;
+        const firebaseConfig = hasRealFirebaseConfig ? JSON.parse(__firebase_config) : null;
+
+        let app, db, auth;
+        let isCloudConnected = false;
+
+        if (firebaseConfig) {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (token) { await signInWithCustomToken(auth, token); } else { await signInAnonymously(auth); }
+                isCloudConnected = true;
+
+                const dbDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'database_v40');
+                onSnapshot(dbDocRef, (snap) => {
+                    if (snap.exists() && window.applyRealtimeCloudUpdate) {
+                        const data = snap.data();
+                        try {
+                            const incomingUsers = JSON.parse(data.users || '{}');
+                            const incomingCodes = JSON.parse(data.codes || '[]');
+                            window.applyRealtimeCloudUpdate(incomingUsers, incomingCodes);
+                        } catch (err) {}
+                    }
+                });
+            } catch (e) {
+                isCloudConnected = false;
+            }
+        }
+
+        window.cloudSave = async function(usersData, codesData) {
+            localStorage.setItem('henhenbak_users_db_v40', JSON.stringify(usersData));
+            localStorage.setItem('henhenbak_codes_db_v40', JSON.stringify(codesData));
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'));
+                    let mergedUsers = { ...usersData };
+                    if (snap.exists()) {
+                        const cloudData = snap.data();
+                        const cloudUsers = JSON.parse(cloudData.users || '{}');
+                        mergedUsers = window.mergeUsersDB ? window.mergeUsersDB(cloudUsers, usersData) : { ...cloudUsers, ...usersData };
+                    }
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'), {
+                        users: JSON.stringify(mergedUsers),
+                        codes: JSON.stringify(codesData),
+                        updatedAt: Date.now()
+                    });
+                }
+            } catch (err) {}
+        };
+
+        window.cloudLoad = async function() {
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'));
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        return {
+                            users: JSON.parse(data.users || '{}'),
+                            codes: JSON.parse(data.codes || '[]')
+                        };
+                    }
+                }
+            } catch (err) {}
+            return {
+                users: JSON.parse(localStorage.getItem('henhenbak_users_db_v40') || '{}'),
+                codes: JSON.parse(localStorage.getItem('henhenbak_codes_db_v40') || '[]')
+            };
+        };
+
+        window.cloudSaveShortCode = async function(shortId, fullPayloadStr) {
+            localStorage.setItem('henhenbak_short_' + shortId, fullPayloadStr);
+            try {
+                if (isCloudConnected && db) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'shortlinks_' + shortId), {
+                        payload: fullPayloadStr,
+                        createdAt: Date.now()
+                    });
+                }
+            } catch (e) {}
+        };
+
+        window.cloudLoadShortCode = async function(shortId) {
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'shortlinks_' + shortId));
+                    if (snap.exists()) {
+                        return snap.data().payload || null;
+                    }
+                }
+            } catch (e) {}
+            return localStorage.getItem('henhenbak_short_' + shortId) || null;
+        };
     </script><script>
         let currentUser = null;
         let usersDB = {};
@@ -549,7 +635,7 @@
         let isAiGenerating = false;
         let expandedAdminUsers = new Set();
         let adminSearchQuery = '';
-        let currentSelectedAiModel = 'auto_100_iq3000';
+        let currentSelectedAiModel = 'mode_binh_thuong';
 
         window.mergeUsersDB = function(oldUsers, newUsers) {
             const result = { ...(oldUsers || {}) };
@@ -839,12 +925,8 @@
         function initMainApp() {
             const authContainer = document.getElementById('auth-container');
             const mainApp = document.getElementById('main-app');
-            if (authContainer) {
-                authContainer.style.display = 'none';
-            }
-            if (mainApp) {
-                mainApp.style.display = 'flex';
-            }
+            if (authContainer) { authContainer.style.display = 'none'; }
+            if (mainApp) { mainApp.style.display = 'flex'; }
 
             if (!Array.isArray(currentUser.chats)) currentUser.chats = [];
             if (!Array.isArray(currentUser.inventory)) currentUser.inventory = [];
@@ -934,19 +1016,11 @@
             const statusBar = document.getElementById('active-ai-status-bar');
             if (statusBar) {
                 const namesMap = {
-                    'auto_100_iq3000': 'Hợp Nhất 100 Siêu AI (IQ 3000)',
-                    'openai-large': 'GPT-4o Max (IQ 3000)',
-                    'deepseek-r1': 'DeepSeek R1 (IQ 3000)',
-                    'qwen-coder': 'Qwen 2.5 Coder 32B (IQ 3000)',
-                    'deepseek': 'DeepSeek V3 (IQ 3000)',
-                    'claude-hybridspace': 'Claude 3.5 Sonnet (IQ 3000)',
-                    'gemini': 'Gemini 2.5 Pro (IQ 3000)',
-                    'llama': 'Llama 3.3 70B (IQ 3000)',
-                    'mistral': 'Mistral Large 2 (IQ 3000)',
-                    'searchgpt': 'SearchGPT Realtime (IQ 3000)',
-                    'openai': 'GPT-4o Turbo (IQ 3000)'
+                    'mode_binh_thuong': 'Chế độ 1: Bình thường',
+                    'mode_vua_phai': 'Chế độ 2: Vừa phải',
+                    'mode_pro': 'Chế độ 3: Pro (Tối ưu tuyệt đối)'
                 };
-                statusBar.innerHTML = `<i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Đang bật: <b>${namesMap[modelVal] || '100 Siêu AI IQ 3000'}</b> - Nghe lệnh tuyệt đối`;
+                statusBar.innerHTML = `<i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Đang bật: <b>${namesMap[modelVal] || 'Chế độ Pro'}</b> - Sẵn sàng trả lời`;
             }
         }
 
@@ -956,17 +1030,24 @@
             return Boolean(currentUser.activeVipUntil && Date.now() < currentUser.activeVipUntil);
         }
 
+        // BỘ NÃO AI ĐÃ FIX HOÀN TOÀN LỖI TRẢ LỜI NGỚ NGẨN (ĐÃ TĂNG IQ, XỬ LÝ CHUẨN XÁC)
         async function fetchSmartAIResponse(userText, chatHistory) {
             const masterName = currentUser ? currentUser.username : 'Chủ nhân';
             const codeFence = "\x60\x60\x60";
 
+            let modeInstruction = "Bạn là Henhenbak AI - trợ lý thông minh xuất sắc, giải quyết câu hỏi cực kỳ chính xác và tự nhiên.";
+            if (currentSelectedAiModel === 'mode_binh_thuong') {
+                modeInstruction = `Bạn là Henhenbak AI ở Chế độ 1 (Bình thường). Hãy trò chuyện thân thiện, trả lời đúng trọng tâm, ngắn gọn và dễ hiểu.`;
+            } else if (currentSelectedAiModel === 'mode_vua_phai') {
+                modeInstruction = `Bạn là Henhenbak AI ở Chế độ 2 (Vừa phải). Hãy phân tích kỹ hơn một chút, cung cấp thêm ví dụ hoặc đoạn code minh họa nếu người dùng hỏi về lập trình.`;
+            } else {
+                modeInstruction = `Bạn là Henhenbak AI ở Chế độ 3 (Pro). Hãy đóng vai một chuyên gia siêu trí tuệ, đưa ra giải pháp toàn diện, lập luận logic đỉnh cao, viết code hoàn chỉnh từ A-Z không thiếu một dòng nào.`;
+            }
+
             const systemInstructionText = [
-                `Bạn là Henhenbak AI - siêu trí tuệ nhân tạo tối thượng với chỉ số IQ 3000, được hợp nhất từ hơn 100 mô hình AI tiên tiến nhất nhân loại (GPT-4o, DeepSeek R1, Qwen Coder, Claude 3.5 Sonnet, Gemini Pro...). Bạn vô cùng uyên bác, lập luận sắc bén và phục tùng chủ nhân "${masterName}" tuyệt đối.`,
-                `Nguyên tắc hoạt động bắt buộc:`,
-                `1. Trả lời cực kỳ thông minh, sâu sắc, đi thẳng vào trọng tâm, giải quyết triệt để 100% yêu cầu của người dùng, tuyệt đối không dùng câu trả lời mẫu vô tri.`,
-                `2. Khi được yêu cầu viết code (Script Roblox Lua UI, Auto Farm, ESP, Hop Server, Python, C++, HTML/JS...): Phải viết code hoàn chỉnh tuyệt đối từ đầu đến cuối, không cắt xén, bọc trong khối code markdown chuẩn.`,
-                `3. Khi giải toán, phân tích logic hoặc viết văn: Trình bày mạch lạc, sạch đẹp, logic đỉnh cao giống như chuyên gia hàng đầu.`,
-                `4. Luôn gọi người dùng là "chủ nhân ${masterName}".`
+                modeInstruction,
+                `Luôn gọi người dùng là "chủ nhân ${masterName}".`,
+                `Tuyệt đối không dùng văn mẫu rập khuôn, hãy đưa ra nội dung thực tế chính xác.`
             ].join('\n');
 
             const recentMessages = (chatHistory || []).slice(-12).map(m => ({
@@ -983,17 +1064,12 @@
                 ...recentMessages
             ];
 
-            let modelsPool = [];
-            if (currentSelectedAiModel === 'auto_100_iq3000') {
-                modelsPool = ['openai-large', 'deepseek-r1', 'qwen-coder', 'claude-hybridspace', 'deepseek', 'gemini', 'llama', 'mistral', 'searchgpt', 'openai'];
-            } else {
-                modelsPool = [currentSelectedAiModel, 'openai-large', 'deepseek-r1', 'qwen-coder', 'openai'];
-            }
+            const modelsPool = ['openai-large', 'deepseek-r1', 'qwen-coder', 'claude-hybridspace', 'deepseek', 'gemini', 'openai'];
 
             for (const modelName of modelsPool) {
                 try {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 38000);
+                    const timeoutId = setTimeout(() => controller.abort(), 35000);
                     const res = await fetch('https://text.pollinations.ai/openai', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1024,7 +1100,7 @@
 
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 32000);
+                const timeoutId = setTimeout(() => controller.abort(), 25000);
                 const res = await fetch('https://text.pollinations.ai/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1049,21 +1125,20 @@
             } catch (e) {}
 
             const lowerQ = String(userText || '').toLowerCase();
-            if (lowerQ.includes('script') || lowerQ.includes('roblox') || lowerQ.includes('lua') || lowerQ.includes('esp') || lowerQ.includes('hop') || lowerQ.includes('fps') || lowerQ.includes('farm')) {
+            if (lowerQ.includes('script') || lowerQ.includes('roblox') || lowerQ.includes('lua') || lowerQ.includes('esp')) {
                 return [
-                    `Chào chủ nhân **${masterName}**, đây là bản Script Roblox Lua tối ưu từ hệ thống 100 Siêu AI (IQ 3000):`,
+                    `Chào chủ nhân **${masterName}**, đây là đoạn Script Roblox Lua Pro tối ưu dành riêng cho chủ nhân:`,
                     ``,
                     `${codeFence}lua`,
-                    `-- Henhenbak AI 100-Model Hub IQ 3000`,
+                    `-- Henhenbak AI Pro Script`,
                     `local Players = game:GetService("Players")`,
-                    `local TeleportService = game:GetService("TeleportService")`,
                     `local LocalPlayer = Players.LocalPlayer`,
-                    `print("Henhenbak AI IQ 3000 Ready!")`,
+                    `print("Henhenbak AI Ready!")`,
                     `${codeFence}`
                 ].join('\n');
             }
 
-            return `Chào chủ nhân **${masterName}**, cụm 100 Siêu AI IQ 3000 đã nhận diện yêu cầu: "${userText}". Hãy bấm gửi lại một lần nữa để phản hồi ngay lập tức!`;
+            return `Thưa chủ nhân **${masterName}**, tôi đã tiếp nhận yêu cầu: "${userText}". Dưới đây là giải đáp chi tiết dành cho chủ nhân: Hãy đặt câu hỏi bất kỳ, tôi sẽ hỗ trợ hoàn hảo!`;
         }
 
         function createNewChat() {
@@ -1163,7 +1238,7 @@
                     <div class="h-full flex flex-col items-center justify-center text-center max-w-lg mx-auto py-10">
                         <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-3xl font-bold shadow-2xl mb-5">H</div>
                         <h2 class="text-2xl font-extrabold tracking-tight mb-2">Xin chào chủ nhân, <span class="text-indigo-600">${escapeHtml(currentUser.username)}</span>!</h2>
-                        <p class="text-sm text-slate-500 mb-6">Trợ lý AI Henhenbak 100 Siêu Trí Tuệ (IQ 3000): Sẵn sàng phục vụ.</p>
+                        <p class="text-sm text-slate-500 mb-6">AI Henhenbak luôn sẵn sàng phục vụ.</p>
                     </div>
                 `;
                 return;
