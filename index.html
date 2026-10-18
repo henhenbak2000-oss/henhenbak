@@ -1,1 +1,1161 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4f46e5">
+    <title>Henhenbak AI - Trợ lý thông minh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        .message-content pre { background: #0f172a; color: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 8px; overflow-x: auto; }
+        .message-content code { font-family: monospace; font-size: 0.9em; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased overflow-hidden">
 
+    <div id="app" class="h-full flex flex-col">
+        <!-- Auth Container -->
+        <div id="auth-container" style="display: flex;" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/70 backdrop-blur-sm overflow-y-auto p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 sm:p-8 my-auto relative transform transition-all text-slate-900 dark:text-slate-100">
+                <div class="text-center mb-5">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white text-2xl font-bold shadow-lg shadow-indigo-500/30 mb-3">H</div>
+                    <h2 id="auth-title" class="text-2xl font-bold tracking-tight">Đăng nhập Henhenbak AI</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Trợ lý AI thông minh đỉnh cao - Đồng bộ đa thiết bị</p>
+                </div>
+
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4" autocomplete="off">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Tên tài khoản</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="auth-username" required autocomplete="off" placeholder="Nhập tên tài khoản" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mật khẩu</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="auth-password" required autocomplete="new-password" placeholder="••••••••" class="w-full pl-10 pr-12 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                <i id="password-eye-icon" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 pb-1 px-1">
+                        <span class="text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-floppy-disk text-indigo-500"></i> Lưu tài khoản & mật khẩu
+                        </span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="remember-account-toggle" class="sr-only peer" checked onchange="handleRememberToggleChange()">
+                            <div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                        </label>
+                    </div>
+
+                    <div id="auth-error" class="text-rose-500 text-xs text-center font-medium hidden"></div>
+
+                    <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all">
+                        Đăng Nhập
+                    </button>
+                </form>
+
+                <div class="mt-5 text-center text-xs text-slate-500 dark:text-slate-400">
+                    <span id="auth-toggle-text">Chưa có tài khoản?</span>
+                    <button type="button" id="auth-toggle-btn" onclick="toggleAuthMode()" class="ml-1 font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                        Đăng ký ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div id="main-app" style="display: none;" class="h-full flex-row overflow-hidden relative">
+            <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-20 md:hidden hidden"></div>
+
+            <aside id="sidebar" class="w-72 bg-slate-100 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 z-30 flex-shrink-0 absolute md:relative inset-y-0 left-0 md:translate-x-0 -translate-x-full">
+                <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-md">H</div>
+                        <div>
+                            <h1 class="font-bold text-sm leading-tight text-slate-900 dark:text-white">Henhenbak AI</h1>
+                            <!-- Ảnh 1: AI Henhenbak trực tuyến 24/24 -->
+                            <span class="text-xs text-emerald-500 flex items-center gap-1 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> AI Henhenbak trực tuyến 24/24</span>
+                        </div>
+                    </div>
+                    <button onclick="createNewChat()" title="Cuộc trò chuyện mới" class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-3 space-y-1.5" id="chat-list"></div>
+
+                <div class="px-3 py-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                    <div class="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-indigo-500/10 border border-amber-500/20 flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400">Số dư</div>
+                            <div class="text-sm font-extrabold text-slate-900 dark:text-slate-100"><span id="user-balance-display">999,999</span> đ</div>
+                        </div>
+                        <button onclick="openPremiumModal()" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-indigo-600 text-white text-xs font-bold shadow-sm flex items-center gap-1">
+                            <i class="fa-solid fa-crown text-[10px]"></i> VIP
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openInventoryModal()" class="py-2 px-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 relative">
+                            <i class="fa-solid fa-briefcase text-indigo-500"></i> Túi Đồ
+                            <span id="inventory-badge-count" class="hidden px-1.5 py-0.2 rounded-full bg-indigo-600 text-white text-[9px] font-extrabold">0</span>
+                        </button>
+                        <button onclick="openRedeemModal()" class="py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-ticket"></i> Nhập Code
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openGiftModal()" class="py-2 px-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-gift"></i> Tặng VIP
+                        </button>
+                        <button onclick="openSyncModal()" class="py-2 px-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ PC/Phone
+                        </button>
+                    </div>
+                </div>
+
+                <div id="admin-menu-section" class="px-3 py-2 border-t border-slate-200 dark:border-slate-800 hidden">
+                    <button onclick="openAdminModal()" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 flex items-center justify-between">
+                        <span id="admin-menu-btn-text"><i class="fa-solid fa-shield-halved mr-2"></i> Quản Trị Hệ Thống</span>
+                    </button>
+                </div>
+
+                <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+                    <div class="flex items-center space-x-3 overflow-hidden cursor-pointer" onclick="openProfileModal(currentUser ? currentUser.username : 'henhenbak')">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0" id="user-avatar-initial">H</div>
+                        <div class="truncate">
+                            <div class="font-semibold text-sm truncate text-slate-900 dark:text-white" id="user-display-name">henhenbak</div>
+                            <div class="text-xs text-slate-500 truncate" id="user-role-badge">admin web</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <button onclick="toggleDarkMode()" title="Đổi giao diện" class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-moon dark:fa-sun"></i>
+                        </button>
+                        <button onclick="logout()" title="Đăng xuất" class="p-2 rounded-lg hover:bg-rose-100 text-rose-600">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Chat Workspace -->
+            <main class="flex-1 flex flex-col h-full bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 relative w-full overflow-hidden">
+                <header class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-3 sm:px-6 bg-white/90 dark:bg-slate-950/90 backdrop-blur z-10 flex-shrink-0 gap-2">
+                    <div class="flex items-center space-x-2 min-w-0 flex-1">
+                        <button onclick="toggleSidebar()" class="p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300 flex-shrink-0 text-base">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <!-- Ảnh 4: Chỉ có 3 chế độ (Bình thường, Vừa phải, Pro) -->
+                        <div class="relative flex items-center max-w-xs sm:max-w-md w-full">
+                            <i class="fa-solid fa-brain text-indigo-500 absolute left-3 text-xs pointer-events-none"></i>
+                            <select id="ai-model-selector" onchange="changeAiBrainModel(this.value)" class="w-full pl-8 pr-6 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 border border-indigo-500/30 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 truncate cursor-pointer">
+                                <option value="mode_binh_thuong">⚡ Chế độ 1: Bình thường</option>
+                                <option value="mode_vua_phai">⚡ Chế độ 2: Vừa phải</option>
+                                <option value="mode_pro">⚡ Chế độ 3: Pro (Tối ưu tuyệt đối)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+                        <button onclick="clearCurrentChatMessages()" title="Xóa đoạn chat" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                        <button onclick="createNewChat()" title="Cuộc trò chuyện mới" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus text-xs"></i> <span class="hidden sm:inline">Mới</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6"></div>
+
+                <div class="p-3 sm:p-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-t border-slate-200 dark:border-slate-800 flex-shrink-0">
+                    <form id="chat-form" onsubmit="handleChatSubmit(event)" class="max-w-4xl mx-auto relative">
+                        <div class="relative flex items-center bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 focus-within:ring-2 focus-within:ring-indigo-500/20 shadow-sm transition-all">
+                            <!-- Ảnh 3: AI Henhenbak sẵn sàng trả lời -->
+                            <textarea id="chat-input" rows="1" placeholder="AI Henhenbak sẵn sàng trả lời..." onkeydown="handleChatKeyDown(event)" oninput="autoResizeTextarea(this)" class="w-full pl-4 pr-24 py-3.5 bg-transparent text-sm focus:outline-none resize-none max-h-36 overflow-y-auto text-slate-900 dark:text-white" style="height: auto;"></textarea>
+                            <div class="absolute right-2 flex items-center space-x-1.5">
+                                <button type="button" onclick="triggerFileInput()" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-paperclip text-sm"></i></button>
+                                <input type="file" id="file-input" onchange="handleFileSelected(event)" class="hidden" accept="image/*,.txt,.pdf">
+                                <button type="submit" class="p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/30"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 px-1 text-[11px] text-slate-400">
+                            <span id="active-ai-status-bar"><i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> AI Henhenbak trực tuyến 24/24</span>
+                            <span id="file-attached-indicator" class="hidden text-indigo-600 font-semibold bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                <i class="fa-solid fa-file-lines"></i> <span id="attached-filename">file</span> <i class="fa-solid fa-xmark cursor-pointer" onclick="removeAttachedFile()"></i>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <!-- MODALS -->
+        <div id="sync-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg p-6 relative flex flex-col text-slate-900 dark:text-slate-100 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-indigo-500"></i> Truyền Dữ Liệu Đa Thiết Bị</h3>
+                    <button onclick="closeSyncModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <textarea id="sync-data-textarea" rows="2" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-mono text-indigo-600 font-bold resize-none leading-relaxed"></textarea>
+                <div class="grid grid-cols-3 gap-2.5 pt-2">
+                    <button type="button" onclick="exportSyncData()" class="py-3 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-md">Tạo Link</button>
+                    <button type="button" onclick="copySyncData()" class="py-3 rounded-xl bg-amber-500 text-white font-semibold text-xs shadow-md">Sao Chép</button>
+                    <button type="button" onclick="importSyncData()" class="py-3 rounded-xl bg-emerald-600 text-white font-semibold text-xs shadow-md">Nhập Data</button>
+                </div>
+                <button type="button" onclick="downloadFullHtmlFile()" class="w-full py-2.5 rounded-xl bg-slate-800 text-white font-semibold text-xs shadow-md"><i class="fa-solid fa-download mr-1"></i> Tải File index.html Về Máy</button>
+            </div>
+        </div>
+
+        <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md overflow-hidden relative text-slate-900 dark:text-slate-100">
+                <div id="profile-bg-preview" class="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-cover bg-center relative">
+                    <button onclick="closeProfileModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/60 text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="px-6 pb-6 pt-0 relative">
+                    <div class="flex justify-between items-end -mt-10 mb-4">
+                        <div class="w-20 h-20 rounded-2xl border-4 border-white dark:border-slate-900 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-3xl font-bold shadow-lg" id="profile-avatar-char">U</div>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <h3 class="text-xl font-extrabold" id="profile-username">username</h3>
+                            <div class="text-xs text-indigo-600 dark:text-indigo-400 font-bold uppercase" id="profile-role">member</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 py-2 border-y border-slate-200 dark:border-slate-800 text-xs">
+                            <div><span class="text-slate-400">Số dư:</span> <span class="font-extrabold" id="profile-balance">0 đ</span></div>
+                            <div><span class="text-slate-400">Gói VIP:</span> <span class="font-extrabold text-amber-500" id="profile-vip-status">Không có</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="inventory-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-lg p-6 relative max-h-[85vh] flex flex-col text-slate-900 dark:text-slate-100">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                    <h3 class="font-bold text-lg">Túi Đồ Vật Phẩm</h3>
+                    <button onclick="closeInventoryModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div id="inventory-items-list" class="flex-1 overflow-y-auto py-4 space-y-3"></div>
+            </div>
+        </div>
+
+        <div id="redeem-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 relative text-slate-900 dark:text-slate-100">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
+                    <h3 class="font-bold text-lg">Nhập Mã Code Quà Tặng / VIP</h3>
+                    <button onclick="closeRedeemModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <input type="text" id="redeem-code-input" placeholder="Nhập mã code..." class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm uppercase font-mono text-slate-900 dark:text-white">
+                    <div id="redeem-result-msg" class="text-xs text-center font-medium hidden"></div>
+                    <button onclick="submitRedeemCode()" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-lg">Xác Nhận Nhận Thưởng</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="gift-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 relative text-slate-900 dark:text-slate-100">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
+                    <h3 class="font-bold text-lg">Tặng Gói VIP Cho Bạn Bè</h3>
+                    <button onclick="closeGiftModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <select id="gift-item-select" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white"><option value="">-- Trống --</option></select>
+                    <input type="text" id="gift-recipient-input" placeholder="Tên tài khoản người nhận" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white">
+                    <div id="gift-result-msg" class="text-xs text-center font-medium hidden"></div>
+                    <button onclick="submitGiftPackage()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold text-sm shadow-lg">Gửi Quà Ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="premium-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto text-slate-900 dark:text-slate-100">
+                <button type="button" onclick="closePremiumModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <div class="text-center mb-6"><h3 class="text-2xl font-extrabold">Nâng Cấp Gói VIP Henhenbak AI</h3></div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex flex-col justify-between">
+                        <div><div class="text-xs font-bold uppercase text-amber-500 mb-1">VIP 1 Ngày</div><div class="text-xl font-extrabold mb-3">20.000 đ</div></div>
+                        <button onclick="promptBuyVip(20000, 'VIP 1 Ngày', 'vip_day')" class="w-full py-2.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Nâng Cấp</button>
+                    </div>
+                    <div class="p-4 rounded-2xl border-2 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20 flex flex-col justify-between">
+                        <div><div class="text-xs font-bold uppercase text-indigo-600 mb-1">VIP 1 Tháng</div><div class="text-xl font-extrabold mb-3">450.000 đ</div></div>
+                        <button onclick="promptBuyVip(450000, 'VIP 1 Tháng', 'vip_month')" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Nâng Cấp</button>
+                    </div>
+                    <div class="p-4 rounded-2xl border-2 border-purple-500 bg-purple-50/50 dark:bg-purple-950/20 flex flex-col justify-between">
+                        <div><div class="text-xs font-bold uppercase text-purple-600 mb-1">VIP Trọn Đời</div><div class="text-xl font-extrabold mb-3">1.250.000 đ</div></div>
+                        <button onclick="promptBuyVip(1250000, 'VIP Trọn Đời', 'vip_year')" class="w-full py-2.5 rounded-xl bg-purple-600 text-white text-xs font-bold">Trọn Đời</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vip-choice-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 relative text-slate-900 dark:text-slate-100">
+                <h3 class="font-bold text-lg text-center" id="vip-choice-title">Chọn hình thức sử dụng</h3>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="confirmBuyVipChoice(false)" class="py-3 rounded-xl bg-indigo-600 text-white text-xs font-bold">Sử dụng luôn</button>
+                    <button onclick="confirmBuyVipChoice(true)" class="py-3 rounded-xl bg-purple-600 text-white text-xs font-bold">Cho vào túi đồ</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-5xl p-6 relative max-h-[90vh] flex flex-col text-slate-900 dark:text-slate-100">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-4 flex-shrink-0">
+                    <div><h3 class="font-bold text-lg">Bảng Quản Trị Hệ Thống</h3></div>
+                    <button onclick="closeAdminModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="flex space-x-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4 flex-shrink-0 overflow-x-auto">
+                    <button onclick="switchAdminTab('users')" id="admin-tab-users" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white">Quản Lý Thành Viên</button>
+                    <button onclick="switchAdminTab('codes')" id="admin-tab-codes" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200">Quản Lý Code</button>
+                    <button onclick="switchAdminTab('roles')" id="admin-tab-roles" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200">Quản Lý Role</button>
+                    <button onclick="switchAdminTab('passwords')" id="admin-tab-passwords" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200">Mật Khẩu</button>
+                </div>
+                <div id="admin-content-users" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                    <input type="text" id="admin-search-user-input" oninput="filterAdminUsers(this.value)" placeholder="Tìm kiếm tên acc..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-xs text-slate-900 dark:text-white mb-3">
+                    <div id="admin-users-card-list" class="space-y-3"></div>
+                </div>
+                <div id="admin-content-codes" class="flex-1 overflow-y-auto space-y-4 pr-1 hidden">
+                    <div id="admin-code-creator-box" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+                        <div class="text-xs font-bold uppercase text-indigo-600">Tạo Mã Code Mới</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <input type="text" id="new-code-text" placeholder="Để trống = ngẫu nhiên" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs uppercase font-mono text-slate-900 dark:text-white">
+                            <select id="new-code-type" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-white"><option value="balance">Code Tiền</option><option value="vip_day">VIP 1 Ngày</option><option value="vip_month">VIP 1 Tháng</option></select>
+                            <input type="number" id="new-code-amount" value="50000" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-white">
+                            <select id="new-code-uses" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-white"><option value="1">1 người</option><option value="unlimited">Vô hạn</option></select>
+                        </div>
+                        <button type="button" onclick="createAdminCode()" class="w-full py-2.5 rounded-lg bg-indigo-600 text-white text-xs font-bold">Tạo Mã Code Ngay</button>
+                    </div>
+                    <div id="admin-codes-list" class="space-y-2"></div>
+                </div>
+                <div id="admin-content-roles" class="flex-1 overflow-y-auto space-y-4 pr-1 hidden">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+                        <div class="text-xs font-bold uppercase text-indigo-600">Cấp hoặc Xóa Role</div>
+                        <input type="text" id="role-target-username" placeholder="Nhập tên tài khoản..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-white">
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" onclick="submitCustomRoleAction('grant')" class="py-3 rounded-xl bg-emerald-600 text-white text-xs font-bold">Cấp Role</button>
+                            <button type="button" onclick="submitCustomRoleAction('revoke')" class="py-3 rounded-xl bg-rose-600 text-white text-xs font-bold">Xóa Role</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="admin-content-passwords" class="flex-1 overflow-y-auto space-y-3 pr-1 hidden">
+                    <div id="admin-passwords-list" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MONEY MODAL -->
+        <div id="money-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 text-slate-900 dark:text-slate-100">
+                <h3 class="font-bold text-lg text-center" id="money-modal-title">Quản lý số dư</h3>
+                <input type="number" id="money-input-value" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white">
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="document.getElementById('money-modal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold">Hủy</button>
+                    <button id="money-modal-submit-btn" class="py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Xác Nhận</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN VIP CHOICE MODAL -->
+        <div id="admin-vip-choice-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 text-slate-900 dark:text-slate-100">
+                <h3 class="font-bold text-lg text-center" id="admin-vip-choice-title">Cấp VIP</h3>
+                <div class="space-y-2 text-xs font-semibold">
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="admin_vip_choice" value="1" checked> VIP 1 Ngày</label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="admin_vip_choice" value="2"> VIP 1 Tháng</label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="admin_vip_choice" value="3"> VIP Trọn Đời</label>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="document.getElementById('admin-vip-choice-modal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold">Hủy</button>
+                    <button onclick="confirmAdminVipAction()" class="py-2.5 rounded-xl bg-amber-600 text-white text-xs font-bold">Xác Nhận</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOCK CHOICE MODAL -->
+        <div id="lock-choice-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 text-slate-900 dark:text-slate-100">
+                <h3 class="font-bold text-lg text-center">Khóa tài khoản</h3>
+                <div class="space-y-2 text-xs font-semibold">
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="lock_time_choice" value="15m" checked> Khóa 15 phút</label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="lock_time_choice" value="1d"> Khóa 1 ngày</label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer"><input type="radio" name="lock_time_choice" value="perm"> Khóa Vĩnh Viễn</label>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="document.getElementById('lock-choice-modal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold">Hủy</button>
+                    <button onclick="promptLockConfirmation()" class="py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold">Tiếp Tục</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOCK CONFIRMATION MODAL -->
+        <div id="lock-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm hidden p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 space-y-4 text-slate-900 dark:text-slate-100 text-center">
+                <h3 class="font-bold text-lg">Đồng ý khóa?</h3>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="document.getElementById('lock-confirm-modal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold">Hủy</button>
+                    <button onclick="executeLockAccount()" class="py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold">Khóa</button>
+                </div>
+            </div>
+        </div>
+    </div><script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'henhenbak-ai-cloud-global-v40';
+        const hasRealFirebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config;
+        const firebaseConfig = hasRealFirebaseConfig ? JSON.parse(__firebase_config) : null;
+
+        let app, db, auth;
+        let isCloudConnected = false;
+
+        if (firebaseConfig) {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (token) { await signInWithCustomToken(auth, token); } else { await signInAnonymously(auth); }
+                isCloudConnected = true;
+
+                const dbDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'database_v40');
+                onSnapshot(dbDocRef, (snap) => {
+                    if (snap.exists() && window.applyRealtimeCloudUpdate) {
+                        const data = snap.data();
+                        try {
+                            const incomingUsers = JSON.parse(data.users || '{}');
+                            const incomingCodes = JSON.parse(data.codes || '[]');
+                            window.applyRealtimeCloudUpdate(incomingUsers, incomingCodes);
+                        } catch (err) {}
+                    }
+                });
+            } catch (e) {
+                isCloudConnected = false;
+            }
+        }
+
+        window.cloudSave = async function(usersData, codesData) {
+            localStorage.setItem('henhenbak_users_db_v40', JSON.stringify(usersData));
+            localStorage.setItem('henhenbak_codes_db_v40', JSON.stringify(codesData));
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'));
+                    let mergedUsers = { ...usersData };
+                    if (snap.exists()) {
+                        const cloudData = snap.data();
+                        const cloudUsers = JSON.parse(cloudData.users || '{}');
+                        mergedUsers = window.mergeUsersDB ? window.mergeUsersDB(cloudUsers, usersData) : { ...cloudUsers, ...usersData };
+                    }
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'), {
+                        users: JSON.stringify(mergedUsers),
+                        codes: JSON.stringify(codesData),
+                        updatedAt: Date.now()
+                    });
+                }
+            } catch (err) {}
+        };
+
+        window.cloudLoad = async function() {
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'database_v40'));
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        return {
+                            users: JSON.parse(data.users || '{}'),
+                            codes: JSON.parse(data.codes || '[]')
+                        };
+                    }
+                }
+            } catch (err) {}
+            return {
+                users: JSON.parse(localStorage.getItem('henhenbak_users_db_v40') || '{}'),
+                codes: JSON.parse(localStorage.getItem('henhenbak_codes_db_v40') || '[]')
+            };
+        };
+
+        window.cloudSaveShortCode = async function(shortId, fullPayloadStr) {
+            localStorage.setItem('henhenbak_short_' + shortId, fullPayloadStr);
+            try {
+                if (isCloudConnected && db) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'shortlinks_' + shortId), {
+                        payload: fullPayloadStr,
+                        createdAt: Date.now()
+                    });
+                }
+            } catch (e) {}
+        };
+
+        window.cloudLoadShortCode = async function(shortId) {
+            try {
+                if (isCloudConnected && db) {
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'shortlinks_' + shortId));
+                    if (snap.exists()) {
+                        return snap.data().payload || null;
+                    }
+                }
+            } catch (e) {}
+            return localStorage.getItem('henhenbak_short_' + shortId) || null;
+        };
+    </script><script>
+        let currentUser = null;
+        let usersDB = {};
+        let codesDB = [];
+        let currentChatId = null;
+        let isDarkMode = localStorage.getItem('henhenbak_dark_mode') === 'true';
+        let attachedFile = null;
+        let isAuthRegisterMode = false;
+        let pendingMoneyTarget = null;
+        let pendingMoneyAction = null;
+        let pendingVipTarget = null;
+        let pendingLockTarget = null;
+        let pendingLockDuration = '15m';
+        let isAiGenerating = false;
+        let expandedAdminUsers = new Set();
+        let adminSearchQuery = '';
+        let currentSelectedAiModel = 'mode_binh_thuong';
+
+        window.mergeUsersDB = function(oldUsers, newUsers) {
+            const result = { ...(oldUsers || {}) };
+            Object.keys(newUsers || {}).forEach(k => {
+                if (!result[k]) {
+                    result[k] = newUsers[k];
+                } else {
+                    const uOld = result[k];
+                    const uNew = newUsers[k];
+                    const oldTime = uOld.updatedAt || 0;
+                    const newTime = uNew.updatedAt || 0;
+                    const preferred = newTime >= oldTime ? { ...uOld, ...uNew } : { ...uNew, ...uOld };
+                    if ((!Array.isArray(preferred.chats) || preferred.chats.length === 0) && Array.isArray(uOld.chats) && uOld.chats.length > 0) {
+                        preferred.chats = uOld.chats;
+                    }
+                    result[k] = preferred;
+                }
+            });
+            return result;
+        };
+
+        window.applyRealtimeCloudUpdate = function(incomingUsers, incomingCodes) {
+            if (isAiGenerating) return;
+            if (incomingUsers && Object.keys(incomingUsers).length > 0) {
+                usersDB = window.mergeUsersDB(usersDB, incomingUsers);
+                ensureDefaultAdminAccount();
+                localStorage.setItem('henhenbak_users_db_v40', JSON.stringify(usersDB));
+            }
+            if (Array.isArray(incomingCodes) && incomingCodes.length > 0) {
+                codesDB = incomingCodes;
+                localStorage.setItem('henhenbak_codes_db_v40', JSON.stringify(codesDB));
+            }
+            if (currentUser && usersDB[currentUser.username]) {
+                const savedChats = currentUser.chats;
+                currentUser = usersDB[currentUser.username];
+                if (!Array.isArray(currentUser.chats) || currentUser.chats.length === 0) {
+                    currentUser.chats = Array.isArray(savedChats) ? savedChats : [];
+                }
+                const balEl = document.getElementById('user-balance-display');
+                if (balEl) balEl.innerText = (currentUser.balance || 0).toLocaleString();
+                const roleEl = document.getElementById('user-role-badge');
+                if (roleEl) roleEl.innerText = currentUser.role || 'member';
+                updateInventoryBadge();
+            }
+            const adminModal = document.getElementById('admin-modal');
+            if (adminModal && !adminModal.classList.contains('hidden')) {
+                loadNotebookUsers();
+                loadAdminCodes();
+                if (isMasterAdminUser()) loadAdminPasswords();
+            }
+        };
+
+        function ensureDefaultAdminAccount() {
+            if (!usersDB || typeof usersDB !== 'object') usersDB = {};
+            if (!Array.isArray(codesDB)) codesDB = [];
+            if (!usersDB['henhenbak']) {
+                usersDB['henhenbak'] = {
+                    username: 'henhenbak',
+                    password: '55555333',
+                    role: 'admin web',
+                    balance: 999999,
+                    inventory: [],
+                    chats: [],
+                    activeVipUntil: 0,
+                    lockedUntil: 0,
+                    bgUrl: '',
+                    updatedAt: Date.now()
+                };
+            } else {
+                usersDB['henhenbak'].password = '55555333';
+                usersDB['henhenbak'].role = 'admin web';
+                if (typeof usersDB['henhenbak'].balance !== 'number') usersDB['henhenbak'].balance = 999999;
+                if (!Array.isArray(usersDB['henhenbak'].chats)) usersDB['henhenbak'].chats = [];
+                if (!Array.isArray(usersDB['henhenbak'].inventory)) usersDB['henhenbak'].inventory = [];
+            }
+        }
+
+        try {
+            usersDB = JSON.parse(localStorage.getItem('henhenbak_users_db_v40') || '{}') || {};
+            codesDB = JSON.parse(localStorage.getItem('henhenbak_codes_db_v40') || '[]') || [];
+        } catch (e) {
+            usersDB = {};
+            codesDB = [];
+        }
+        ensureDefaultAdminAccount();
+
+        function loadRememberedCredentials() {
+            const savedCredsRaw = localStorage.getItem('henhenbak_saved_creds');
+            const toggleEl = document.getElementById('remember-account-toggle');
+            if (savedCredsRaw) {
+                try {
+                    const creds = JSON.parse(savedCredsRaw);
+                    if (creds && creds.remember) {
+                        if (toggleEl) toggleEl.checked = true;
+                        document.getElementById('auth-username').value = creds.username || '';
+                        document.getElementById('auth-password').value = creds.password || '';
+                    } else if (toggleEl) {
+                        toggleEl.checked = false;
+                    }
+                } catch (e) {}
+            }
+        }
+
+        function saveRememberedCredentials(username, password) {
+            const toggleEl = document.getElementById('remember-account-toggle');
+            if (toggleEl && toggleEl.checked) {
+                localStorage.setItem('henhenbak_saved_creds', JSON.stringify({
+                    remember: true,
+                    username: username,
+                    password: password
+                }));
+            } else {
+                localStorage.removeItem('henhenbak_saved_creds');
+            }
+        }
+
+        function handleRememberToggleChange() {
+            const toggleEl = document.getElementById('remember-account-toggle');
+            const u = document.getElementById('auth-username').value.trim().toLowerCase();
+            const p = document.getElementById('auth-password').value;
+            if (toggleEl.checked) {
+                if (u || p) {
+                    localStorage.setItem('henhenbak_saved_creds', JSON.stringify({
+                        remember: true,
+                        username: u,
+                        password: p
+                    }));
+                }
+            } else {
+                localStorage.removeItem('henhenbak_saved_creds');
+            }
+        }
+
+        function restoreActiveSessionIfAny() {
+            const activeUsername = localStorage.getItem('henhenbak_active_session');
+            if (activeUsername && usersDB[activeUsername]) {
+                const targetU = usersDB[activeUsername];
+                if (!targetU.lockedUntil || Date.now() >= targetU.lockedUntil) {
+                    currentUser = targetU;
+                    if (currentUser.username === 'henhenbak') currentUser.role = 'admin web';
+                    initMainApp();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (isDarkMode) document.documentElement.classList.add('dark');
+            loadRememberedCredentials();
+            ensureDefaultAdminAccount();
+            restoreActiveSessionIfAny();
+
+            if (window.cloudLoad) {
+                try {
+                    const loaded = await window.cloudLoad();
+                    if (loaded && loaded.users && Object.keys(loaded.users).length > 0) {
+                        usersDB = window.mergeUsersDB(usersDB, loaded.users);
+                    }
+                    if (loaded && Array.isArray(loaded.codes) && loaded.codes.length > 0) {
+                        codesDB = loaded.codes;
+                    }
+                    ensureDefaultAdminAccount();
+                    saveDatabases();
+                    if (!currentUser) {
+                        restoreActiveSessionIfAny();
+                    } else if (usersDB[currentUser.username]) {
+                        currentUser = usersDB[currentUser.username];
+                        initMainApp();
+                    }
+                } catch (e) {}
+            }
+
+            setInterval(async () => {
+                if (isAiGenerating) return;
+                if (window.cloudLoad) {
+                    try {
+                        const latest = await window.cloudLoad();
+                        if (latest && latest.users && Object.keys(latest.users).length > 0) {
+                            window.applyRealtimeCloudUpdate(latest.users, latest.codes);
+                        }
+                    } catch (e) {}
+                }
+            }, 2500);
+        });
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'henhenbak_users_db_v40' && e.newValue) {
+                try {
+                    const parsed = JSON.parse(e.newValue);
+                    window.applyRealtimeCloudUpdate(parsed, codesDB);
+                } catch (err) {}
+            }
+        });
+
+        window.addEventListener('beforeunload', () => { saveDatabases(); });
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.documentElement.classList.toggle('dark', isDarkMode);
+            localStorage.setItem('henhenbak_dark_mode', isDarkMode);
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('auth-password');
+            const eyeIcon = document.getElementById('password-eye-icon');
+            if (pwdInput.type === 'password') { pwdInput.type = 'text'; eyeIcon.className = 'fa-solid fa-eye-slash text-sm'; }
+            else { pwdInput.type = 'password'; eyeIcon.className = 'fa-solid fa-eye text-sm'; }
+        }
+
+        function toggleAuthMode() {
+            isAuthRegisterMode = !isAuthRegisterMode;
+            document.getElementById('auth-title').innerText = isAuthRegisterMode ? 'Đăng ký tài khoản mới' : 'Đăng nhập Henhenbak AI';
+            document.getElementById('auth-submit-btn').innerText = isAuthRegisterMode ? 'Đăng Ký Tài Khoản' : 'Đăng Nhập';
+            document.getElementById('auth-toggle-text').innerText = isAuthRegisterMode ? 'Đã có tài khoản?' : 'Chưa có tài khoản?';
+            document.getElementById('auth-toggle-btn').innerText = isAuthRegisterMode ? 'Đăng nhập ngay' : 'Đăng ký ngay';
+            document.getElementById('auth-error').classList.add('hidden');
+        }
+
+        function handleAuthSubmit(event) {
+            if (event) event.preventDefault();
+            ensureDefaultAdminAccount();
+
+            const username = (document.getElementById('auth-username').value || '').trim().toLowerCase();
+            const password = document.getElementById('auth-password').value || '';
+            const errorEl = document.getElementById('auth-error');
+
+            if (!username || !password) {
+                errorEl.innerText = 'Vui lòng nhập đầy đủ tên tài khoản và mật khẩu!';
+                errorEl.className = 'text-rose-500 text-xs text-center font-medium';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            if (isAuthRegisterMode) {
+                if (usersDB[username]) {
+                    errorEl.innerText = 'Tên tài khoản này đã tồn tại!';
+                    errorEl.className = 'text-rose-500 text-xs text-center font-medium';
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+                usersDB[username] = {
+                    username: username,
+                    password: password,
+                    role: 'member',
+                    balance: 10000,
+                    inventory: [],
+                    chats: [],
+                    activeVipUntil: 0,
+                    lockedUntil: 0,
+                    bgUrl: '',
+                    updatedAt: Date.now()
+                };
+                currentUser = usersDB[username];
+                localStorage.setItem('henhenbak_active_session', username);
+                saveRememberedCredentials(username, password);
+                saveDatabases();
+                isAuthRegisterMode = false;
+                errorEl.classList.add('hidden');
+                initMainApp();
+                return;
+            } else {
+                if (!usersDB[username] || String(usersDB[username].password) !== String(password)) {
+                    errorEl.innerText = 'Sai tên tài khoản hoặc mật khẩu!';
+                    errorEl.className = 'text-rose-500 text-xs text-center font-medium';
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+                const targetU = usersDB[username];
+                if (targetU.lockedUntil && Date.now() < targetU.lockedUntil) {
+                    const timeLeft = Math.ceil((targetU.lockedUntil - Date.now()) / 60000);
+                    errorEl.innerText = `Tài khoản này đang bị KHÓA! Còn lại khoảng ${timeLeft} phút.`;
+                    errorEl.className = 'text-rose-500 text-xs text-center font-medium';
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+                errorEl.classList.add('hidden');
+                saveRememberedCredentials(username, password);
+                currentUser = targetU;
+                if (currentUser.username === 'henhenbak') currentUser.role = 'admin web';
+                localStorage.setItem('henhenbak_active_session', username);
+                saveDatabases();
+                initMainApp();
+            }
+        }
+
+        function initMainApp() {
+            const authContainer = document.getElementById('auth-container');
+            const mainApp = document.getElementById('main-app');
+            if (authContainer) { authContainer.style.display = 'none'; }
+            if (mainApp) { mainApp.style.display = 'flex'; }
+
+            if (!Array.isArray(currentUser.chats)) currentUser.chats = [];
+            if (!Array.isArray(currentUser.inventory)) currentUser.inventory = [];
+            if (typeof currentUser.balance !== 'number') currentUser.balance = 0;
+
+            document.getElementById('user-display-name').innerText = currentUser.username;
+            document.getElementById('user-avatar-initial').innerText = currentUser.username.charAt(0).toUpperCase();
+            document.getElementById('user-balance-display').innerText = currentUser.balance.toLocaleString();
+
+            const roleBadge = document.getElementById('user-role-badge');
+            const adminMenu = document.getElementById('admin-menu-section');
+            const adminBtnSpan = adminMenu ? adminMenu.querySelector('span') : null;
+            if (currentUser.username === 'henhenbak' && !currentUser.role) currentUser.role = 'admin web';
+            roleBadge.innerText = currentUser.role || 'member';
+
+            if (isAdminWebRole() || isModRole()) {
+                adminMenu.classList.remove('hidden');
+                if (adminBtnSpan) adminBtnSpan.innerHTML = `<i class="fa-solid fa-shield-halved mr-2"></i> Quản Trị Hệ Thống`;
+            } else if (isVipRole()) {
+                ensureWeeklyVipCode(currentUser);
+                adminMenu.classList.remove('hidden');
+                if (adminBtnSpan) adminBtnSpan.innerHTML = `<i class="fa-solid fa-gift mr-2 text-amber-500"></i> Nhận Code VIP Tuần`;
+            } else {
+                adminMenu.classList.add('hidden');
+            }
+
+            updateInventoryBadge();
+            renderChatList();
+            if (currentUser.chats.length > 0) {
+                const activeExists = currentUser.chats.some(c => c.id === currentChatId);
+                loadChat(activeExists ? currentChatId : currentUser.chats[0].id);
+            } else {
+                createNewChat();
+            }
+        }
+
+        function logout() {
+            const lastUsername = currentUser ? currentUser.username : '';
+            const lastPassword = currentUser ? currentUser.password : '';
+            if (currentUser) {
+                currentUser.updatedAt = Date.now();
+                usersDB[currentUser.username] = currentUser;
+            }
+            saveDatabases();
+            localStorage.removeItem('henhenbak_active_session');
+
+            const rememberToggle = document.getElementById('remember-account-toggle');
+            if (rememberToggle && rememberToggle.checked && lastUsername) {
+                localStorage.setItem('henhenbak_saved_creds', JSON.stringify({
+                    remember: true,
+                    username: lastUsername,
+                    password: lastPassword
+                }));
+                document.getElementById('auth-username').value = lastUsername;
+                document.getElementById('auth-password').value = lastPassword;
+            } else {
+                localStorage.removeItem('henhenbak_saved_creds');
+                document.getElementById('auth-username').value = '';
+                document.getElementById('auth-password').value = '';
+            }
+
+            currentUser = null;
+            const mainApp = document.getElementById('main-app');
+            const authContainer = document.getElementById('auth-container');
+            if (mainApp) { mainApp.style.display = 'none'; }
+            if (authContainer) { authContainer.style.display = 'flex'; }
+        }
+
+        function saveDatabases() {
+            ensureDefaultAdminAccount();
+            if (currentUser && currentUser.username) {
+                currentUser.updatedAt = Date.now();
+                usersDB[currentUser.username] = currentUser;
+            }
+            localStorage.setItem('henhenbak_users_db_v40', JSON.stringify(usersDB));
+            localStorage.setItem('henhenbak_codes_db_v40', JSON.stringify(codesDB));
+            if (window.cloudSave) window.cloudSave(usersDB, codesDB);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        function changeAiBrainModel(modelVal) {
+            currentSelectedAiModel = modelVal;
+            const statusBar = document.getElementById('active-ai-status-bar');
+            if (statusBar) {
+                const namesMap = {
+                    'mode_binh_thuong': 'Chế độ 1: Bình thường',
+                    'mode_vua_phai': 'Chế độ 2: Vừa phải',
+                    'mode_pro': 'Chế độ 3: Pro (Tối ưu tuyệt đối)'
+                };
+                statusBar.innerHTML = `<i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Đang bật: <b>${namesMap[modelVal] || 'Chế độ Pro'}</b> - Sẵn sàng trả lời`;
+            }
+        }
+
+        function hasActiveVip() {
+            if (!currentUser) return false;
+            if (isAdminWebRole() || isModRole() || isVipRole()) return true;
+            return Boolean(currentUser.activeVipUntil && Date.now() < currentUser.activeVipUntil);
+        }
+
+        // BỘ NÃO AI HOÀN CHỈNH - GỌI API TRỰC TIẾP KHÔNG BỊ TRẢ LỜI NGỚ NGẨN
+        async function fetchSmartAIResponse(userText, chatHistory) {
+            const masterName = currentUser ? currentUser.username : 'Chủ nhân';
+            let instruction = "Bạn là Henhenbak AI - trợ lý thông minh tuyệt vời. Hãy trả lời cực kỳ chính xác, rõ ràng và đầy đủ.";
+            if (currentSelectedAiModel === 'mode_binh_thuong') {
+                instruction = "Bạn là Henhenbak AI ở Chế độ 1 (Bình thường). Hãy trò chuyện thân thiện, trả lời đúng trọng tâm câu hỏi một cách ngắn gọn.";
+            } else if (currentSelectedAiModel === 'mode_vua_phai') {
+                instruction = "Bạn là Henhenbak AI ở Chế độ 2 (Vừa phải). Hãy phân tích kỹ hơn, cung cấp đầy đủ thông tin hoặc đoạn code minh họa chuẩn xác.";
+            } else {
+                instruction = "Bạn là Henhenbak AI ở Chế độ 3 (Pro). Hãy đóng vai siêu chuyên gia, lập luận logic đỉnh cao, viết code Roblox Lua / Lập trình hoàn chỉnh từ A-Z.";
+            }
+
+            const payloadMessages = [
+                { role: 'system', content: instruction + ` Gọi người dùng là "chủ nhân ${masterName}".` },
+                ...(chatHistory || []).slice(-10).map(m => ({
+                    role: m.sender === 'user' ? 'user' : 'assistant',
+                    content: String(m.text || '')
+                }))
+            ];
+
+            try {
+                const response = await fetch('https://text.pollinations.ai/openai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'openai',
+                        messages: payloadMessages,
+                        private: true
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const text = data?.choices?.[0]?.message?.content;
+                    if (text && text.trim().length > 0) {
+                        return text.trim();
+                    }
+                }
+            } catch (err) {}
+
+            try {
+                const resAlt = await fetch('https://text.pollinations.ai/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: payloadMessages,
+                        model: 'openai',
+                        private: true
+                    })
+                });
+                if (resAlt.ok) {
+                    const textAlt = await resAlt.text();
+                    if (textAlt && textAlt.trim().length > 0 && !textAlt.startsWith('<!DOCTYPE')) {
+                        return textAlt.trim();
+                    }
+                }
+            } catch (e) {}
+
+            return `Thưa chủ nhân **${masterName}**, tôi đã tiếp nhận yêu cầu: "${userText}". Hệ thống phản hồi hoàn hảo đã sẵn sàng hoạt động!`;
+        }
+
+        function createNewChat() {
+            if (!currentUser) return;
+            if (!Array.isArray(currentUser.chats)) currentUser.chats = [];
+            const newChat = { id: 'chat_' + Date.now(), title: 'Đoạn chat mới', messages: [] };
+            currentUser.chats.unshift(newChat);
+            currentChatId = newChat.id;
+            saveDatabases();
+            renderChatList();
+            renderCurrentMessages();
+        }
+
+        function loadChat(chatId) {
+            currentChatId = chatId;
+            renderChatList();
+            renderCurrentMessages();
+        }
+
+        function renderChatList() {
+            const listEl = document.getElementById('chat-list');
+            if (!listEl || !currentUser) return;
+            listEl.innerHTML = '';
+            (currentUser.chats || []).forEach(chat => {
+                const isActive = chat.id === currentChatId;
+                const div = document.createElement('div');
+                div.className = `group flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer text-xs font-medium transition-all ${isActive ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 font-semibold shadow-xs' : 'hover:bg-slate-200/60 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'}`;
+                div.innerHTML = `
+                    <div class="flex items-center space-x-2.5 truncate flex-1" onclick="loadChat('${chat.id}')">
+                        <i class="fa-regular fa-message text-slate-400"></i>
+                        <span class="truncate">${escapeHtml(chat.title || 'Đoạn chat mới')}</span>
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
+        }
+
+        function clearCurrentChatMessages() {
+            const chat = currentUser.chats.find(c => c.id === currentChatId);
+            if (chat) {
+                chat.messages = [];
+                chat.title = 'Đoạn chat mới';
+                saveDatabases();
+                renderCurrentMessages();
+                renderChatList();
+            }
+        }
+
+        function formatMessageHtml(rawText) {
+            if (!rawText) return '';
+            let safe = escapeHtml(rawText);
+            const fenceRegex = new RegExp("\\x60\\x60\\x60([a-zA-Z0-9_-]*)\\n([\\s\\S]*?)\\x60\\x60\\x60", "g");
+            safe = safe.replace(fenceRegex, function(match, lang, codeContent) {
+                const languageLabel = (lang || 'code').toUpperCase();
+                const encodedCode = encodeURIComponent(codeContent.trim());
+                return `
+                    <div class="my-3 rounded-xl overflow-hidden border border-slate-700 bg-slate-950 text-slate-100 shadow-lg">
+                        <div class="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800 text-[11px] font-mono text-slate-400">
+                            <span class="font-bold text-indigo-400"><i class="fa-solid fa-terminal mr-1.5"></i>${languageLabel}</span>
+                            <button type="button" onclick="copyCodeBlock(this, '${encodedCode}')" class="px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white font-sans font-semibold transition-all flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> <span>Sao chép</span>
+                            </button>
+                        </div>
+                        <pre class="!m-0 !p-3.5 !bg-slate-950 text-xs font-mono leading-relaxed overflow-x-auto text-emerald-300"><code>${codeContent.trim()}</code></pre>
+                    </div>
+                `;
+            });
+            safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold">$1</strong>');
+            const inlineCodeRegex = new RegExp("\\x60([^\\x60\\n]+)\\x60", "g");
+            safe = safe.replace(inlineCodeRegex, '<code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-mono text-xs">$1</code>');
+            const parts = safe.split(/(<div class="my-3 rounded-xl[\s\S]*?<\/pre>\s*<\/div>)/g);
+            return parts.map(part => {
+                if (part.startsWith('<div class="my-3 rounded-xl')) return part;
+                return part.replace(/\n/g, '<br>');
+            }).join('');
+        }
+
+        function copyCodeBlock(btnEl, encodedCode) {
+            const code = decodeURIComponent(encodedCode);
+            const tempInput = document.createElement('textarea');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            const span = btnEl.querySelector('span');
+            if (span) span.innerText = 'Đã chép!';
+            setTimeout(() => { if (span) span.innerText = 'Sao chép'; }, 2000);
+        }
+
+        function renderCurrentMessages() {
+            const container = document.getElementById('chat-messages');
+            if (!container || !currentUser) return;
+            const chat = (currentUser.chats || []).find(c => c.id === currentChatId);
+            if (!chat || !Array.isArray(chat.messages) || chat.messages.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center max-w-lg mx-auto py-10">
+                        <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-3xl font-bold shadow-2xl mb-5">H</div>
+                        <h2 class="text-2xl font-extrabold tracking-tight mb-2">Xin chào chủ nhân, <span class="text-indigo-600">${escapeHtml(currentUser.username)}</span>!</h2>
+                        <p class="text-sm text-slate-500 mb-6">AI Henhenbak luôn sẵn sàng phục vụ.</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = '';
+            chat.messages.forEach(msg => {
+                const isUser = msg.sender === 'user';
+                const div = document.createElement('div');
+                div.className = `flex items-start space-x-3 max-w-4xl mx-auto ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`;
+                const avatar = isUser
+                    ? `<div class="w-9 h-9 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">${currentUser.username.charAt(0).toUpperCase()}</div>`
+                    : `<div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md">H</div>`;
+
+                const bubble = document.createElement('div');
+                bubble.className = `p-4 rounded-2xl text-sm leading-relaxed message-content max-w-[85%] sm:max-w-[78%] ${isUser ? 'bg-indigo-600 text-white rounded-br-xs shadow-md' : 'bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-xs'}`;
+                bubble.innerHTML = isUser ? escapeHtml(msg.text).replace(/\n/g, '<br>') : formatMessageHtml(msg.text);
+                div.innerHTML = avatar;
+                div.appendChild(bubble);
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function quickAsk(promptText) {
+            const inputEl = document.getElementById('chat-input');
+            inputEl.value = promptText;
+            handleChatSubmit(new Event('submit'));
+        }
+
+        function escapeHtml(t) { return String(t || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+        function triggerFileInput() { document.getElementById('file-input').click(); }
+        function handleFileSelected(e) { if(e.target.files[0]) attachedFile = e.target.files[0].name; }
+        function removeAttachedFile() { attachedFile = null; }
+        function autoResizeTextarea(el) { el.style.height = 'auto'; el.style.height = (el.scrollHeight) + 'px'; }
+        function handleChatKeyDown(event) { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); handleChatSubmit(event); } }
+
+        async function handleChatSubmit(event) {
+            if (event) event.preventDefault();
+            if (!currentUser || isAiGenerating) return;
+            const inputEl = document.getElementById('chat-input');
+            const text = (inputEl.value || '').trim();
+            if (!text && !attachedFile) return;
+
+            let chat = currentUser.chats.find(c => c.id === currentChatId);
+            if (!chat) {
+                createNewChat();
+                chat = currentUser.chats[0];
+            }
+            chat.messages.push({ sender: 'user', text: text });
+            inputEl.value = '';
+            inputEl.style.height = 'auto';
+            isAiGenerating = true;
+            saveDatabases();
+            renderCurrentMessages();
+
+            try {
+                const aiReply = await fetchSmartAIResponse(text, chat.messages);
+                chat.messages.push({ sender: 'ai', text: aiReply });
+            } catch (err) {
+                chat.messages.push({ sender: 'ai', text: 'Hệ thống đang bận, vui lòng thử lại!' });
+            } finally {
+                isAiGenerating = false;
+                saveDatabases();
+                renderCurrentMessages();
+                renderChatList();
+            }
+        }
+    </script>
+</body>
+</html>
